@@ -38,13 +38,13 @@
 -(void)setDataDogUserInfo:(BOOL)isSetUp email:(NSString*)email customerId:(int)customerId{
     if (isSetUp) {
         [DDDatadog setUserInfoWithId:[NSString stringWithFormat:@"%d", customerId] name:@"" email:email extraInfo:@{}];
-        DDRUMMonitor *monitor = [DDRUMMonitor new];
+        DDRUMMonitor *monitor = [[DDRUMMonitor alloc] init];
         [monitor addAttributeForKey:@"usr.id" value:[NSString stringWithFormat:@"%d", customerId]];
         [monitor addAttributeForKey:@"usr.email" value:email];
         [DDGlobal setRum:monitor];
     }else{
-        [DDDatadog setUserInfoWithId:@"" name:@"" email:@"" extraInfo:@{}];
-        [DDGlobal setRum:[DDRUMMonitor new]];
+        [DDDatadog setUserInfoWithId:NULL name:NULL email:NULL extraInfo:@{}];
+        [DDGlobal setRum:[[DDRUMMonitor alloc] init]];
     }
     
 }
