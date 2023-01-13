@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'DDLogg'
   s.module_name      = "DDBridge"
-  s.version          = '0.1.6'
+  s.version          = '0.1.7'
   s.summary          = 'This Frame work is used for act as bridge for DataDog logger'
   s.description      = 'This Frame work is used for act as bridge between Kotlin muliplatform library and Datadog frameworks for Data logging'
 
