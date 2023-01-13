@@ -18,11 +18,25 @@
  */
 
 -(void)initialize{
-    DDConfiguration *configuration = [[DDConfiguration builderWithClientToken:@"pubcf6814c612ebd27e41452f7466586c77" environment:@"uat"] build];
+    DDConfigurationBuilder *builder = [DDConfiguration builderWithRumApplicationID:@"bc30b46d-e996-44fd-a87a-1d105199ea27"
+                                                                       clientToken:@"pubcf6814c612ebd27e41452f7466586c77"
+                                                                       environment:@"uat"];
+    [builder setWithServiceName:@"app-name"];
+    [builder setWithEndpoint:[DDEndpoint eu1]];
+    [builder trackUIKitRUMViews];
+    [builder trackUIKitRUMActions];
+    [builder trackURLSessionWithFirstPartyHosts:[NSSet new]];
 
-        [DDDatadog initializeWithAppContext:[[DDAppContext alloc] init]
-                            trackingConsent:[DDTrackingConsent granted]
-                              configuration:configuration];
+    [DDDatadog initializeWithAppContext:[DDAppContext new]
+                        trackingConsent:[DDTrackingConsent granted]
+                          configuration:[builder build]];
+    
+    
+    
+    
+    
+    DDGlobal.rum = [[DDRUMMonitor alloc] init];
+    
 }
 -(void)logToRemote:(NSString*)message with:(NSDictionary*)attributes{
     NSLog(@"logToRemote called");
@@ -44,11 +58,10 @@
  * Note : Sending Null resets the customer ID as this means user has logged out.
  */
 -(void)setDataDogUserInfo:(BOOL)isSetUp email:(NSString*)email customerId:(int)customerId{
-        id rum = DDGlobal.rum;
-        DDGlobal.rum = rum;
+       
     if (isSetUp) {
         [DDDatadog setUserInfoWithId:[NSString stringWithFormat:@"%d", customerId] name:@"" email:email extraInfo:@{}];
-        DDRUMMonitor *monitor = [DDRUMMonitor new];
+        DDRUMMonitor *monitor = DDGlobal.rum;
         [monitor addAttributeForKey:@"usr.id" value:[NSString stringWithFormat:@"%d", customerId]];
         [monitor addAttributeForKey:@"usr.email" value:email];
         [DDGlobal setRum:monitor];
