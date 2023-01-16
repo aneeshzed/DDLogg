@@ -17,11 +17,11 @@
  * This fun checks if logging is enabled from LD or not
  */
 
--(void)initialize{
-    DDConfigurationBuilder *builder = [DDConfiguration builderWithRumApplicationID:@"bc30b46d-e996-44fd-a87a-1d105199ea27"
-                                                                       clientToken:@"pubcf6814c612ebd27e41452f7466586c77"
-                                                                       environment:@"uat"];
-    [builder setWithServiceName:@"app-name"];
+-(void)initializeWith:(NSString*)appID clientToken:(NSString*)token environment:(NSString*)environment{
+    DDConfigurationBuilder *builder = [DDConfiguration builderWithRumApplicationID:appID
+                                                                       clientToken:token
+                                                                       environment:environment];
+//    [builder setWithServiceName:@"app-name"];
     [builder setWithEndpoint:[DDEndpoint eu1]];
     [builder trackUIKitRUMViews];
     [builder trackUIKitRUMActions];
@@ -39,9 +39,6 @@
     
 }
 -(void)logToRemote:(NSString*)message with:(NSDictionary*)attributes{
-    NSLog(@"logToRemote called");
-    NSLog(@"message = %@",message);
-    NSLog(@"attributes = %@",attributes);
     DDLoggerBuilder *builder = [DDLogger builder];
     [builder sendNetworkInfo:YES];
 //    [builder setWithDatadogReportingThreshold:.info];
